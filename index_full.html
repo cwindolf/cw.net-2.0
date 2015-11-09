@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="./css/reset.css">
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<aside>
+		<menu>
+			<div class="bar">
+				<p>Charlie Windolf's Home Page</p>
+			</div>
+			<div class="content">
+				<p>Things to do here:</p>
+				<ul>
+					<li id="petri"><p>Petri Dish <em>WIP</em><span class="emoji">&nbsp;&#x1f52c;</span></p></li>
+					<li id="pond"><p>Pond<span class="emoji">&nbsp;&#x1F30A;</span></p></li>
+					<li id="bathtub"><p>Bathtub<span class="emoji">&nbsp;&#x1f6c1;</span></p></li>
+					<li id="conway"><p>Conway's Game of Life<span class="emoji">&nbsp;&#x1f3c1;</span></p></li>
+					<li id="rule"><p>Rule 110</p></li>
+				</ul>
+			</div>
+		</menu>
+	</aside>
+	<main>
+		<section>
+				<div class="bar"><p id="title">Nothing yet...</p><a href="javascript:close();" id="x"></a></div>
+				<div class="content">
+					<iframe name="iframe" id="iframe" src="apps/screensaver.html"></iframe>
+				</div>
+			</tr>
+		</section>
+	</main>
+	<script type="text/javascript">
+	var closed = true;
+	var title = document.getElementById("title");
+	var iframe = document.getElementById("iframe");
+	var x_button_holder = document.getElementById("x");
+
+	function setTitle(newTitle) {
+		title.innerHTML = newTitle;
+	}
+
+
+	function load(url) {
+		iframe.src = url;
+		x.innerHTML = "&times;";
+	}
+
+	function close() {
+		iframe.src = "apps/screensaver.html";
+		x.innerHTML = "";
+		setTitle("Emptiness...");
+	}
+
+	// app buttons
+	var petri = document.getElementById("petri");
+	petri.onclick = function() {
+		load("apps/petridish.html");
+		setTitle("Petri Dish");
+	};
+	var pond = document.getElementById("pond");
+	pond.onclick = function() {
+		load("apps/pond.html");
+		setTitle("A Simulated Pond");
+	};
+	var bathtub = document.getElementById("bathtub");
+	bathtub.onclick = function() {
+		load("apps/bathtub.html");
+		setTitle("A Simulated Bathtub <span style='font-weight:normal;font-style:italic;'>Click to drip drops. Numerical blowups appear in black</span>");
+	};
+	var conway = document.getElementById("conway");
+	conway.onclick = function() {
+		load("apps/conway.html");
+		setTitle("Conway's Game of Life&nbsp;&nbsp;&nbsp;<em><a href='javascript:send(\"randomize\")'>Randomize</a>&nbsp;&nbsp;&nbsp;" + 
+				              			   "<a href='javascript:send(\"clear\")'>Clear</a>&nbsp;&nbsp;&nbsp;" + 
+				              			   "<a href='javascript:send(\"glider\")'>Glider</a>&nbsp;&nbsp;&nbsp;"+ 
+				              			   "<a href='javascript:send(\"gliderGun\")'>Glider Gun</a>&nbsp;&nbsp;&nbsp;"+ 
+				              			   "<a href='javascript:send(\"puffer\")'>Puffer</a></em>");
+	};
+	var rule = document.getElementById("rule");
+	rule.onclick = function() {
+		load("apps/rule.html");
+		setTitle("Rule 110&nbsp;&nbsp;&nbsp;<em><a href='javascript:send(\"reSeed\")'>Reseed</a>");
+	};
+
+	// for interaction with apps. from @wellcaffeinated
+	function sendI(data) {
+    	var idx = iframe.src.indexOf('#'), url = iframe.src;
+    	if ( idx > -1 ){
+        	url = url.substr(0, idx);
+    	}
+    	iframe.src = url + '#' + window.btoa(JSON.stringify(data));
+	}
+	function send(data) {
+    	sendI(data);
+    	setTimeout(function() { sendI("") }, 10);
+    }   
+	</script>
+</body>
+</html>

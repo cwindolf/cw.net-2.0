@@ -1,0 +1,30 @@
+<!doctype HTML>
+<html>
+<head>
+	<script type="text/javascript" src="../js/rule.js"></script>
+</head>
+<body style="margin:0;position:absolute;top:0;left:0;width:100%;height:100%;">
+<script type="text/javascript">
+var r = new RuleOneTen(document.body);
+r.loop();
+// interact
+function getHashData(){
+    var data;
+    try {
+        data = JSON.parse(window.atob(window.location.hash.substr(1)));
+    } catch( e ){}
+    return data;
+}
+window.onhashchange = function() {
+	var s = getHashData();
+	switch(s) {
+		case "reSeed":
+			r.reSeed();
+			break;
+		default:
+			break;
+	}
+}
+</script>
+</body>
+</html>

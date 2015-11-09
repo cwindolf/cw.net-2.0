@@ -1,0 +1,42 @@
+<!doctype HTML>
+<html>
+<head>
+	<script type="text/javascript" src="../js/conway.js"></script>
+</head>
+<body style="margin:0;position:absolute;top:0;left:0;width:100%;height:100%;">
+<script type="text/javascript">
+var c = new Conway(document.body);
+c.loop();
+// interact
+function getHashData(){
+    var data;
+    try {
+        data = JSON.parse(window.atob(window.location.hash.substr(1)));
+    } catch( e ){}
+    return data;
+}
+window.onhashchange = function() {
+	var s = getHashData();
+	switch(s) {
+		case "clear":
+			c.clear();
+			break;
+		case "randomize":
+			c.randomSeed();
+			break;
+		case "glider":
+			c.glider();
+			break;
+		case "gliderGun":
+			c.gliderGun();
+			break;
+		case "puffer":
+			c.puffer();
+			break;
+		default:
+			break;
+	}
+}
+</script>
+</body>
+</html>
