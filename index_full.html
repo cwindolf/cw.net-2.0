@@ -19,6 +19,8 @@
 					<li id="conway"><p>Conway's Game of Life<span class="emoji">&nbsp;&#x1f3c1;</span></p></li>
 					<li id="rule"><p>Rule 110</p></li>
 				</ul>
+				<hr>
+				<p style="text-align:center;"><em><a href="https://github.com/cwindolf/cw.net-2.0">Source</a></em></p>
 			</div>
 		</menu>
 	</aside>
@@ -56,13 +58,13 @@
 	// app buttons
 	var petri = document.getElementById("petri");
 	petri.onclick = function() {
-		load("apps/petridish.html");
+		load("apps/petridish-old.html");
 		setTitle("Petri Dish");
 	};
 	var pond = document.getElementById("pond");
 	pond.onclick = function() {
 		load("apps/pond.html");
-		setTitle("A Simulated Pond");
+		setTitle("A Simulated Pond <span style='font-weight:normal;font-style:italic;'>Please, click!</span>");
 	};
 	var bathtub = document.getElementById("bathtub");
 	bathtub.onclick = function() {

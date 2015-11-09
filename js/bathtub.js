@@ -311,12 +311,12 @@ function CanvasBathtub(ctnr) {
 	system.delegate = this;
 	this.updateHeightAt = function(x,y,height) {
 		var o = 
-		console.assert(isFinite(height));
+		// console.assert(isFinite(height));
 		var col = (255 - (Math.round(height) % 256));
 		this.context.fillStyle = "rgb("+ col + ","+ col +",255)";
 		if (!isFinite(height)) {
-			console.log("bimmer at",x,y,height);
-			console.log("color was",this.context.fillStyle);
+			// console.log("bimmer at",x,y,height);
+			// console.log("color was",this.context.fillStyle);
 			this.context.fillStyle = "#000";
 		}
 		this.context.fillRect(system.dd * x, system.dd * y, system.dd, system.dd);
