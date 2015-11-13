@@ -3,18 +3,18 @@
 var CAPSULE = new Path.RoundRectangle(new Rectangle([0,0], new Size(35,20)), new Size(12,12));
 	CAPSULE.strokeColor = 'black';
 	CAPSULE.strokeWidth = 2;
-	CAPSULE.position = [0, 0];
+	CAPSULE.position = [17.5, 10];
 var ORGANELLES = new Group([
 		new Shape.Circle(new Point(1, 6), 2),
 		new Shape.Circle(new Point(4, -1), 3),
 		new Shape.Circle(new Point(-3, 1), 2)
 	]);
-	ORGANELLES.position = new Point(3,0);
+	ORGANELLES.position = [20.5,10];//new Point(3,0);
 ORGANELLES.fillColor = 'black';
 var BACTERIUM_BODY_PAPERJS = new Group([CAPSULE, ORGANELLES]);
 	BACTERIUM_BODY_PAPERJS.visible = false;
 
-function Bacterium (_x,_y) {
+function Bacterium (_x,_y, _angle) {
 	// phys
 	// this.physics_body = Physics.body('rectangle', {
 	// 				x: _x,
@@ -52,7 +52,9 @@ function Bacterium (_x,_y) {
 					mass: 100
 				}),
 			],
-			restitution: 0.8
+			restitution: 0.8,
+			cof: 0.2,
+			angle: _angle
 		});
 	// view
 	this.paper_body = BACTERIUM_BODY_PAPERJS.clone();
@@ -60,6 +62,7 @@ function Bacterium (_x,_y) {
 	// sync init positions
 	this.physics_body.sleep(false);
 	this.paper_body.position = new Point(_x, _y);
+	this.paper_body.rotation = _angle * 180 / Math.PI;
 	// backreference for physics rendering loop
 	this.physics_body.view = this;
 	this.old_angle = 0;
@@ -76,8 +79,8 @@ Bacterium.prototype = {
 
 	getDecision: function() {
 		return {
-			a_linear: Math.random(),
-			a_angular: (Math.random() - 0.5)
+			left: Math.random() / 10,
+			right: Math.random() / 10
 		};
 	}
 };

@@ -273,7 +273,7 @@ function CanvasBathtub(ctnr) {
 	this.context = this.canvas.getContext("2d");
 	this.context.imageSmoothingEnabled = false;
 	this.running = true;
-	var system = new SWE(Q, this.width);
+	var system = new SWE(Q, Math.max(this.width, this.height));
 	console.log(system);
 	var self = this;
 
@@ -310,7 +310,7 @@ function CanvasBathtub(ctnr) {
 	// be a bathtub delegate
 	system.delegate = this;
 	this.updateHeightAt = function(x,y,height) {
-		var o = 
+		// var o = 
 		// console.assert(isFinite(height));
 		var col = (255 - (Math.round(height) % 256));
 		this.context.fillStyle = "rgb("+ col + ","+ col +",255)";

@@ -9,7 +9,7 @@ var renderer = Physics.renderer('paper', {
 });
 world.add(renderer);
 var integrator = Physics.integrator('verlet', {
-	drag: 0.005
+	drag: 0.008
 });
 world.add(integrator);
 Physics.util.ticker.on(function( time ){
@@ -22,12 +22,13 @@ world.on('step', function() {
 
 // init model
 var b = [], pb, _b;
-for (var i = 0; i < 10; i++) {
-	var _b = new Bacterium(100 + Math.random() * 50 * i, 100 + 30 * i);
+for (var i = 0; i < 1; i++) {
+	var _b = new Bacterium(100 + Math.random() * 50 * i, 100 + 30 * i, Math.random() * Math.PI);
 	b.push(_b);
 	var pb = b[i].physics_body;
 	console.log(pb);
 	world.add(pb);
+	pb.state.angular.pos = 1.5;
 }
 
 // collisions

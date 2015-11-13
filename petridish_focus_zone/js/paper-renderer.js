@@ -24,14 +24,17 @@ Physics.renderer('paper', function(parent) {
 			body.view.renderAt(x, y, angle);
 
 			// control the body:
-			var decision = body.view.getDecision();
+			var thrust = body.view.getDecision();
 			// var scratch = Physics.scratchpad();
-			var v = Physics.vector({x: Math.cos(body.state.angular.pos) * decision.a_linear,
-							 		y: Math.sin(body.state.angular.pos) * decision.a_linear,})
-
-			body.applyForce(v.mult(decision.a_linear));
-			body.applyForce(v.perp().mult(decision.a_angular), {x:1,y:0});
-			body.applyForce(v.perp().mult(-(decision.a_angular)), {x:-1,y:0});
+			var v = Physics.vector({x: Math.cos(body.state.angular.pos),
+							 		y: Math.sin(body.state.angular.pos),}).normalize();
+			// console.log(v);
+			body.applyForce(v.mult(thrust.left), v.perp());
+			body.applyForce(v.mult(thrust.right), v.perp().mult(-1));
+			if (body.state.angular.vel > 5) {
+				body.state.angular.vel = 4.9;
+				body.state.angular.acc = 0;
+			}
 			// scratch.done();
 		}
 	};
