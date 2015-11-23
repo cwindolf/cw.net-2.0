@@ -13,6 +13,7 @@
 			<div class="content">
 				<p>Things to do here:</p>
 				<ul>
+					<li id="landscape"><p>Landscape<span class="emoji">&nbsp;&#x1f5fb;</span></p></li>
 					<li id="petri"><p>Petri Dish <em>WIP</em><span class="emoji">&nbsp;&#x1f52c;</span></p></li>
 					<li id="pond"><p>Pond<span class="emoji">&nbsp;&#x1F30A;</span></p></li>
 					<li id="bathtub"><p>Bathtub<span class="emoji">&nbsp;&#x1f6c1;</span></p></li>
@@ -85,7 +86,11 @@
 		load("apps/rule.html");
 		setTitle("Rule 110&nbsp;&nbsp;&nbsp;<em><a href='javascript:send(\"reSeed\")'>Reseed</a>");
 	};
-
+	var landscape = document.getElementById("landscape");
+	landscape.onclick = function() {
+		load("apps/landscape.html");
+		setTitle("Landscape");
+	};
 	// for interaction with apps. from @wellcaffeinated
 	function sendI(data) {
     	var idx = iframe.src.indexOf('#'), url = iframe.src;

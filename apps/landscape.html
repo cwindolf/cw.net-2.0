@@ -1,0 +1,88 @@
+<!doctype HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="../js/perlin.js"></script>
+	<script type="text/javascript" src="../js/landscape.js"></script>
+	<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function() {
+		window.l = new Landscape(Math.round(document.body.clientWidth), Math.round(document.body.clientHeight), document.body);
+			l.canvas.style.height = "100%";
+			l.canvas.style.width = "100%";
+			l.perlinFill();
+			l.draw();
+	}, false);
+	
+	</script>
+
+	<style>
+	body { background: none; }
+	#legend {
+		position: fixed;
+		top: 10%;
+		right: 10%;
+		z-index: 11;
+		border: 1px solid black;
+		background-color: white;
+	}
+	#legend input[type="radio"] {
+		display: inline-block;
+	}
+	#legend input[type=button] {
+		font-family: "Courier New", monospace;
+	}
+	</style>
+</head>
+<body style="margin:0;position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
+	<div id="legend">
+		<div class="bar">
+			Legend
+		</div>
+		<div class="content">
+			<form action="">
+				Landscape Type
+				<br>
+				<input type="radio" name="noise" id="perlin" value="perlin" checked>
+				<label for="perlin">Perlin</label>
+				<input type="radio" name="noise" id="sine" value="sine">
+				<label for="sine">Sine</label>
+				<hr>
+				<input type="checkbox" id="color" name="color">
+				<label for="color">Color</label>
+				<hr>
+				<input type="button" id="refill" name="refill" value="New Landscape">
+			</form>
+		</div>
+		<script>
+		var colorbox = document.getElementById("color");
+		colorbox.onchange = function() {
+			console.log("color");
+			window.l.color = colorbox.checked;
+			window.l.clear();
+			window.l.draw();
+		};
+
+		var perlin = document.getElementById("perlin");
+		var sine = document.getElementById("sine");
+		function scape() {
+			window.l.clear();
+			if (perlin.checked) {
+				window.l.perlinFill();
+			}
+			else if (sine.checked) {
+				window.l.sineFill();
+			}
+			window.l.draw();
+		}
+
+		perlin.onclick = scape;
+		sine.onclick = scape;
+
+		var refill = document.getElementById("refill");
+		refill.onclick = scape;
+		</script>
+	<strong>
+	</div>
+</body>
+</html>
