@@ -1,7 +1,7 @@
 function Landscape (width, length, container) {
 	this.MAX_HEIGHT = 200;
-	this.xx = width;
-	this.yy = 2 * length + this.MAX_HEIGHT * 2; // more, because of projection
+	this.xx = Math.round(width);
+	this.yy = Math.round(2 * length + this.MAX_HEIGHT * 2); // more, because of projection
 	//
 	this.heightmap = [];
 	//
@@ -10,6 +10,7 @@ function Landscape (width, length, container) {
 	this.canvas.height = length;
 	container.appendChild(this.canvas);
 	this.context = this.canvas.getContext("2d");
+	this.context.imageSmoothingEnabled = false;
 	this.color = false;
 }
 
@@ -62,7 +63,7 @@ Landscape.prototype = {
 	project: function(_x,_y,_z) {
 		return {
 			x: _x, 
-			y: 0.5 * _y - 0.5 * _z
+			y: Math.round(0.5 * _y - 0.5 * _z)
 		};
 	},
 
@@ -72,38 +73,59 @@ Landscape.prototype = {
 	},
 
 	draw: function() {
-		var self = this;
-		setTimeout(function() {
-			console.log("draw");
+		console.log("draw",this.xx,this.yy);
 
-			var p, z;
+		var p, z, pi, i, s;
+		var id = this.context.getImageData(0,0,this.xx,this.yy);
+		var d = id.data;
 
-			self.context.strokeStyle = "black";
-			self.context.fillStyle = "white";
-			for (var x = 0; x < self.xx; x++) {
-				for (var y = 0; y < self.yy; y++) {
-					z = self.heightmap[x][y];
-					p = self.project(x,y,z);
-				if (z > 1) { // mountains
-					if (self.color) {
-						self.context.fillStyle = "hsl("+(20 + (z/self.MAX_A) * 60)+",40%,70%)";
+		for (var x = 0; x < this.xx; x++) {
+			for (var y = 0; y < this.yy; y++) {
+
+				z = this.heightmap[x][y];
+				s = z/this.MAX_A;
+				p = this.project(x,y,z);
+				i = 4 * (Math.round(0.5*y) * this.xx + x);
+				pi = 4 * (p.y*this.xx + p.x);
+				
+				if (z > 3) { // mountains
+					if (this.color) {
+						d[pi] = Math.round(Math.sqrt(s) * 250);
+						d[pi + 1] = Math.round(s * 250);
+						d[pi + 2] = Math.round(s*s * 250);
+						d[pi + 3] = 255;
 					} else {
-						self.context.fillStyle = "hsl(10,0%,"+ (10 + 70 * (z/self.MAX_A)) +"%)";
+						d[pi] = Math.round(s * 250);
+						d[pi + 1] = Math.round(s * 250);
+						d[pi + 2] = Math.round(s * 250);
+						d[pi + 3] = 255;
 					}
-					self.context.fillRect(p.x,p.y,1,1); 
-				} else if (z <= 2 && z >= -2) { // shore
-					self.context.fillStyle = "black";
-					self.context.fillRect(p.x,p.y,2,2);
-				} else if (z <= -(self.MAX_A / 3)) { // lakes
-					if (Math.abs((x + y) % 100) <= 1) {
-						if (self.color)
-							self.context.fillStyle = "#7773ff";
-						else
-							self.context.fillStyle = "black";
-						self.context.fillRect(x, y/2,2,2);
+				} 
+				if (z <= 10 && z >= -3) { // shore
+					d[i] = 0;
+					d[i + 1] = 0;
+					d[i + 2] = 0;
+					d[i + 3] = 255;
+				} 
+				else if (z <= -(this.MAX_A / 2)) { // lakes
+					
+					if (Math.abs((x + y) % 100) <= 3) {
+						// if (this.color) {
+						// 	//todo
+						// 	continue;
+						// } else {
+							d[i] = 0;
+							d[i + 1] = 0;
+							d[i + 2] = 0;
+							d[i + 3] = 255;
+						// }
 					}
+
 				}
+
 			}
-		}},20);
+		}
+		this.context.putImageData(id,0,0);
+		console.log("drew");
 	}
 }
