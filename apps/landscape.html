@@ -6,12 +6,28 @@
 	<script type="text/javascript" src="../js/perlin.js"></script>
 	<script type="text/javascript" src="../js/landscape.js"></script>
 	<script type="text/javascript">
+	function d() {
+			window.setTimeout(function() {
+				window.l.context.font = "20px Courier New";
+				window.l.context.fillStyle = "white";
+				window.l.context.textAlign = "center";
+				window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
+				window.l.draw();
+			}, 20);
+	};
 	document.addEventListener("DOMContentLoaded", function() {
 		window.l = new Landscape(Math.round(document.body.clientWidth), Math.round(document.body.clientHeight), document.body);
 			l.canvas.style.height = "100%";
 			l.canvas.style.width = "100%";
+			l.clear();
 			l.perlinFill();
-			l.draw();
+			window.l.context.font = "20px Courier New";
+			window.l.context.fillStyle = "white";
+			window.l.context.textAlign = "center";
+			window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
+			window.setTimeout(function() {
+				window.l.draw();
+			}, 20);
 	}, false);
 	
 	</script>
@@ -29,9 +45,18 @@
 	#legend input[type="radio"] {
 		display: inline-block;
 	}
-	#legend input[type=button] {
+	#legend input[type='button'] {
 		font-family: "Courier New", monospace;
+		border: 1px solid black;
+		font-size: 0.9em;
+		border-radius: 4px;
+		background-color: white;
+		box-shadow: 1px 1px #888;
 	}
+	#legend input:active[type='button'] {
+		bakcground-color: blue;
+	}
+
 	</style>
 </head>
 <body style="margin:0;position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
@@ -48,7 +73,7 @@
 				<input type="radio" name="noise" id="sine" value="sine">
 				<label for="sine">Sine</label>
 				<hr>
-				<input type="checkbox" id="color" name="color">
+				<input type="checkbox" id="color" name="color" checked>
 				<label for="color">Color</label>
 				<br>
 				<input type="checkbox" id="contour" name="contour">
@@ -63,14 +88,26 @@
 			console.log("color");
 			window.l.color = colorbox.checked;
 			window.l.clear();
-			window.l.draw();
+			window.l.context.font = "20px Courier New";
+			window.l.context.fillStyle = "white";
+			window.l.context.textAlign = "center";
+			window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
+			window.setTimeout(function() {
+				window.l.draw();
+			}, 20);
 		};
 		var contourbox = document.getElementById("contour");
 		contourbox.onchange = function() {
 			console.log("contour");
 			window.l.contour = contourbox.checked;
 			window.l.clear();
-			window.l.draw();
+			window.l.context.font = "20px Courier New";
+			window.l.context.fillStyle = "white";
+			window.l.context.textAlign = "center";
+			window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
+			window.setTimeout(function() {
+				window.l.draw();
+			}, 20);
 		};
 
 		var perlin = document.getElementById("perlin");
@@ -83,7 +120,13 @@
 			else if (sine.checked) {
 				window.l.sineFill();
 			}
-			window.l.draw();
+			window.l.context.font = "20px Courier New";
+			window.l.context.fillStyle = "white";
+			window.l.context.textAlign = "center";
+			window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
+			window.setTimeout(function() {
+				window.l.draw();
+			}, 20);
 		}
 
 		perlin.onclick = scape;
