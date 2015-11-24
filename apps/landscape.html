@@ -50,6 +50,9 @@
 				<hr>
 				<input type="checkbox" id="color" name="color">
 				<label for="color">Color</label>
+				<br>
+				<input type="checkbox" id="contour" name="contour">
+				<label for="contour">Countour Map</label>
 				<hr>
 				<input type="button" id="refill" name="refill" value="New Landscape">
 			</form>
@@ -59,6 +62,13 @@
 		colorbox.onchange = function() {
 			console.log("color");
 			window.l.color = colorbox.checked;
+			window.l.clear();
+			window.l.draw();
+		};
+		var contourbox = document.getElementById("contour");
+		contourbox.onchange = function() {
+			console.log("contour");
+			window.l.contour = contourbox.checked;
 			window.l.clear();
 			window.l.draw();
 		};

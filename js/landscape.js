@@ -12,6 +12,7 @@ function Landscape (width, length, container) {
 	this.context = this.canvas.getContext("2d");
 	this.context.imageSmoothingEnabled = false;
 	this.color = false;
+	this.contours = false;
 }
 
 Landscape.prototype = {
@@ -89,15 +90,17 @@ Landscape.prototype = {
 				pi = 4 * (p.y*this.xx + p.x);
 				
 				if (z > 3) { // mountains
+					if (this.contour && !(z % 10 <= 3.5)) continue;
 					if (this.color) {
 						d[pi] = Math.round(Math.sqrt(s) * 250);
 						d[pi + 1] = Math.round(s * 250);
 						d[pi + 2] = Math.round(s*s * 250);
 						d[pi + 3] = 255;
 					} else {
-						d[pi] = Math.round(s * 250);
-						d[pi + 1] = Math.round(s * 250);
-						d[pi + 2] = Math.round(s * 250);
+						var col = this.contour ? 0 : Math.round(s * 250);
+						d[pi] = col;
+						d[pi + 1] = col;
+						d[pi + 2] = col;
 						d[pi + 3] = 255;
 					}
 				} 
