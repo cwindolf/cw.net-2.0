@@ -1,0 +1,22 @@
+<!doctype HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="../js/lib/perlin.js"></script>
+	<script type="text/javascript" src="../js/landscape.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			var l = new Landscape(document.body);
+			l.init();
+			l.loop();
+		}, false);
+		
+	</script>
+	<style>
+	body {background:white;}
+	</style>
+</head>
+<body style="margin:0;position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
+</body>
+</html>
