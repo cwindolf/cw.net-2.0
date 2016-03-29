@@ -75,7 +75,7 @@ Node.prototype = {
 		// I want to be as close as possible to my siblings. 
 		// well, not too close ...
 		var dist; var lin;
-		var mc = centers[this.uid];
+		var mc = centers[this.uid]; // these were set by centers() wayy below
 		if (this.brother) {
 			dist = this.distances[this.brother.uid];
 			lin = this.BIND_RADIUS - dist;
