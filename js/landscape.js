@@ -8,7 +8,7 @@ function Landscape (container) {
 	// UI
 	this.color = true;
 	// DATA
-	this.heightmap = [];
+	this.heightAt = function(x, y) { return 0; }
 	// DRAW
 	this.canvas = document.createElement("canvas");
 	this.container.appendChild(this.canvas);
@@ -23,15 +23,6 @@ function Landscape (container) {
 // 	init: function() {
 // 		noise.seed(Math.random());
 // 		this.height = 0;
-// 	},
-
-// 	resize: function() {
-// 		console.log("resize");
-// 		this.canvas.width = this.container.clientWidth;
-// 		this.canvas.height = this.container.clientHeight;
-// 		this.xx = Math.round(this.container.clientWidth);
-// 		this.yy = Math.round(this.Y_SCALE * this.container.clientHeight + this.MAX_HEIGHT * this.Y_SCALE * 2);
-// 		this.MAX_I = this.canvas.width * this.canvas.height * 4;
 // 	},
 
 // 	project: function(_x,_y,_z) {
@@ -55,8 +46,8 @@ function Landscape (container) {
 // 				i = 4 * Math.round((cy) * this.xx + x);
 // 				p = this.project(x,cy,z);
 // 				pi = 4 * (p.y*this.xx + p.x);
-				
-				 
+
+
 // 				if ((z < -(this.MAX_HEIGHT / 3) + 1)) { // if (z <= -(2 * this.MAX_A / 4)) { // lakes
 // 					// if (i > this.MAX_I) continue;
 // 					var col = Math.round(s*s * 150);
@@ -93,13 +84,18 @@ function Landscape (container) {
 // }
 
 Landscape.prototype = {
+	resize: function() {
+		console.log("resize");
+		this.canvas.width = this.container.clientWidth;
+		this.canvas.height = this.container.clientHeight;
+		this.xx = Math.round(this.container.clientWidth);
+		this.yy = Math.round(this.Y_SCALE * this.container.clientHeight + this.MAX_HEIGHT * this.Y_SCALE * 2);
+		this.MAX_I = this.canvas.width * this.canvas.height * 4;
+	},
+
 	/* Fill the heightmap */
 	sineFill: function() {
 		delete this.heightmap;
-		this.heightmap = [];
-
-		this.context.fillText("Generating Sine Landscape...",this.canvas.width/2, this.canvas.height/2 + 30);
-
 
 		console.log("sine fill");
 		var x_period = this.xx / Math.pow(2,2 + Math.round(Math.random() * 3));
@@ -117,43 +113,24 @@ Landscape.prototype = {
 			return y_amplitude * Math.sin((y) / (y_period));
 		}
 
-		for (var x = 0; x < this.xx; x++) {
-			this.heightmap.push([]);
-			for (var y = 0; y < this.yy; y++) {
-				this.heightmap[x].push(x_generator(x) + y_generator(y));
-			}
-		}
+		this.heightAt = function(x, y) { return x_generator(x) + y_generator(y); };
 	},
 
 	perlinFill: function() {
 		delete this.heightmap;
 		this.heightmap = [];
-		this.context.fillText("Generating Perlin Landscape...",this.canvas.width/2, this.canvas.height/2 + 30);
 		
 		noise.seed(Math.random());
 
-		for (var x = 0; x < this.xx; x++) {
-			this.heightmap.push([]);
-			for (var y = 0; y < this.yy; y++) {
-				this.heightmap[x].push(noise.perlin2(x / this.PERLIN_DETAIL_FACTOR, y / (this.PERLIN_DETAIL_FACTOR * 4)) * this.MAX_HEIGHT);
-			}
-		}
+		this.heightAt = function(x, y) { return noise.perlin2(x / this.PERLIN_DETAIL_FACTOR, y / (this.PERLIN_DETAIL_FACTOR * 4)) * this.MAX_HEIGHT; };
+
 		this.MAX_A = this.MAX_HEIGHT;
 	},
 
 	simplexFill: function() {
 		delete this.heightmap;
-		this.heightmap = [];
-		this.context.fillText("Generating Simplex Landscape...",this.canvas.width/2, this.canvas.height/2 + 30);
-		
-		noise.seed(Math.random());
-
-		for (var x = 0; x < this.xx; x++) {
-			this.heightmap.push([]);
-			for (var y = 0; y < this.yy; y++) {
-				this.heightmap[x].push(noise.simplex2(x / this.SIMPLEX_DETAIL_FACTOR, y / (this.SIMPLEX_DETAIL_FACTOR * 2)) * this.MAX_HEIGHT);
-			}
-		}
+		this.heightAt = new Function("x", "y", ("return noise.simplex2(x / " + this.SIMPLEX_DETAIL_FACTOR + ", y / (" + this.SIMPLEX_DETAIL_FACTOR + "* 2)) * " + this.MAX_HEIGHT + "; }"));
+		console.log(this.heightAt);
 		this.MAX_A = this.MAX_HEIGHT;
 	},
 	/* Drawing */
@@ -167,61 +144,58 @@ Landscape.prototype = {
 
 	clear: function() {
 		console.log("clear");
-		this.context.fillStyle = "#aaa";
-		this.context.fillRect(0,0,this.xx,this.yy);
-		this.context.font = "20px Courier New";
-		this.context.fillStyle = "white";
-		this.context.textAlign = "center";
-		this.context.fillText("Loading...",this.canvas.width/2, this.canvas.height/2);
+		this.context.fillStyle = "#000";
+		// this.context.fillRect(0,0,this.xx,this.yy);
+		// this.context.font = "20px Courier New";
+		// this.context.fillStyle = "white";
+		// this.context.textAlign = "center";
+		// this.context.fillText("Loading...",this.canvas.width/2, this.canvas.height/2);
 	},
 
 	draw: function() {
-		console.log("draw",this.xx,this.yy);
-
-
-
-		var p, z, pi, i, s;
-		var id = this.context.getImageData(0,0,this.xx,this.yy);
-		var d = id.data;
-
-		for (var x = 0; x < this.xx; x++) {
-			for (var y = 0; y < this.yy; y++) {
-
-				z = this.heightmap[x][y];
-				s = z/this.MAX_A;
-				p = this.project(x,y,z);
-				i = 4 * (Math.round((y - 4 * this.MAX_HEIGHT)/this.Y_SCALE) * this.xx + x);
-				pi = 4 * (p.y*this.xx + p.x);
-				
-				if (z >= -(2 * this.MAX_A / 2.5)) { // mountains
-					if (this.contour && !(z % this.CONTOUR_HEIGHT <= 2)) continue;
-					if (this.color) {
-						d[pi] = Math.round(s * 250);
-						d[pi + 1] = Math.round(Math.sqrt(s) * 250);
-						d[pi + 2] = Math.round(s*s * 250);
-						d[pi + 3] = 255;
+		console.log("draw",this.xx,this.yy, this.MAX_HEIGHT, this.Y_SCALE, this.Z_SCALE);
+		window.frame_y = 0;
+		window.id = this.context.createImageData(Math.floor(this.canvas.width),1);
+		window.d = window.id.data;
+		var self = this;
+		function frame() {
+			var y = window.frame_y++;
+			z = self.heightAt(x, y);
+			s = z/self.MAX_A;
+			p = self.project(x,y,z);
+			console.log(p);
+			console.assert(isFinite(p.y));
+			for (var x = 0; x < this.xx; x++) {
+				if (z >= -(2 * self.MAX_A / 2.5)) { // mountains
+					if (self.contour && !(z % self.CONTOUR_HEIGHT <= 2)) {
+						if (x < self.xx && y < self.yy) window.requestAnimationFrame(frame);
+						else return;
+					}
+					if (self.color) {
+						window.d[4 * x + 0] = Math.round(s * 250);
+						window.d[4 * x + 1] = Math.round(Math.sqrt(s) * 250);
+						window.d[4 * x + 2] = Math.round(s*s * 250);
+						window.d[4 * x + 3] = 255;
 					} else {
 						var col = Math.round(s * 250);
-						d[pi] = col;
-						d[pi + 1] = col;
-						d[pi + 2] = col;
-						d[pi + 3] = 255;
+						window.d[4 * x + 0] = col;
+						window.d[4 * x + 1] = col;
+						window.d[4 * x + 2] = col;
+						window.d[4 * x + 3] = 255;
 					}
 				} 
-				if ((z < -(2 * this.MAX_A / 4) + 1)) { // if (z <= -(2 * this.MAX_A / 4)) { // lakes
-					
+				if ((z < -(2 * self.MAX_A / 4) + 1)) { // if (z <= -(2 * self.MAX_A / 4)) { // lakes
 					var col = Math.round(s*s * 150);
-					d[i] = 160 - col;
-					d[i + 1] = 160 - col;
-					d[i + 2] = this.color ? 240 : 175 - col;
-					d[i + 3] = 255;
-
+					window.d[4 * x + 0] = 160 - col;
+					window.d[4 * x + 1] = 160 - col;
+					window.d[4 * x + 2] = self.color ? 240 : 175 - col;
+					window.d[4 * x + 3] = 255;
 				}
-				
-
 			}
+			self.context.putImageData(window.id, 0, p.y);
+			if (y < self.yy) window.requestAnimationFrame(frame);
 		}
-		this.context.putImageData(id,0,0);
+		frame();
 		console.log("drew");
 	}
 }

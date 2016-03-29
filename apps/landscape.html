@@ -6,25 +6,13 @@
 	<script type="text/javascript" src="../js/lib/perlin.js"></script>
 	<script type="text/javascript" src="../js/landscape.js"></script>
 	<script type="text/javascript">
-	function d() {
-			window.setTimeout(function() {
-				window.l.context.font = "20px Courier New";
-				window.l.context.fillStyle = "white";
-				window.l.context.textAlign = "center";
-				window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
-				window.l.draw();
-			}, 20);
-	};
 	document.addEventListener("DOMContentLoaded", function() {
 		window.l = new Landscape(document.body);
 			l.canvas.style.height = "100%";
 			l.canvas.style.width = "100%";
+			l.canvas.setAttribute("resize", true);
 			l.clear();
 			l.simplexFill();
-			window.l.context.font = "20px Courier New";
-			window.l.context.fillStyle = "white";
-			window.l.context.textAlign = "center";
-			window.l.context.fillText("Rendering...",window.l.canvas.width/2, window.l.canvas.height/2 + 60);
 			window.setTimeout(function() {
 				window.l.draw();
 			}, 20);
