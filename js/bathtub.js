@@ -50,7 +50,7 @@ function SWE(QUANT, LENGTH, n_o, u_o, v_o, g) {
 		for (var _i = 0; _i < QUANT; _i++) {
 			n_o.push([]);
 			for (var _j = 0; _j < QUANT; _j++) {
-				n_o[_i].push(20.0);
+				n_o[_i].push(30.0);
 			}
 		}
 	}
