@@ -13,12 +13,12 @@ function RuleOneTen (container) { // takes a JQ container div
 
 	// init canvas
 	this.canvas = document.createElement("canvas");
-	this.canvas.setAttribute("id", "conway");
+	this.canvas.setAttribute("id", "oneten");
 	this.canvas.setAttribute("width", this.width);
 	this.canvas.setAttribute("height", this.height);
 	this.container.appendChild(this.canvas);
 	this.context = this.canvas.getContext("2d");
-	this.context.imageSmoothingEnabled= false;
+	this.context.imageSmoothingEnabled = false;
 
 	// survive to next g?
 	// don't run edge cases here! i.e. col 0, col (width)
