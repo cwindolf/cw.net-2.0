@@ -34,8 +34,7 @@ aside {
 	height: calc(100% - 2em);
 	padding: 1em;
 }
-menu {
-	
+menu {	
 	overflow: scroll;
 }
 
@@ -118,4 +117,38 @@ span .right {
 
 span.emoji {
 	font-family: sans-serif;
+}
+
+/* responsive */
+@media only screen and (max-width: 976px) {
+	aside {
+		width: 100%;
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		padding: 1em;
+	}
+
+	menu, section {
+		position: relative;
+		width: calc(100% - 2em);
+		height: 100%;
+		top: 0; left: 0;
+	}
+
+	main {
+		display: none;
+	}
+
+	main.open {
+		display: block;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+	}
 }

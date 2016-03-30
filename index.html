@@ -13,13 +13,13 @@
 			<div class="content">
 				<p>Things to do here:</p>
 				<ul>
-					<li id="accretion"><p>Accretion<span class="emoji">&nbsp;
+					<li id="accretion"><p>Accretion<span class="emoji">&nbsp;&#x2693;</span></p></li>
 					<li id="coral"><p>Coral<span class="emoji">&nbsp;&#x1F300;</span></p></li>
 					<li id="petri"><p>Petri Dish <em>WIP</em><span class="emoji">&nbsp;&#x1f52c;</span></p></li>
 					<li id="pond"><p>Pond<span class="emoji">&nbsp;&#x1F30A;</span></p></li>
 					<li id="bathtub"><p>Bathtub<span class="emoji">&nbsp;&#x1f6c1;</span></p></li>
 					<li id="conway"><p>Conway's Game of Life<span class="emoji">&nbsp;&#x1f3c1;</span></p></li>
-					<li id="rule"><p>Rule 110</p></li>
+					<li id="rule"><p>Rule 110<span class="emoji">&nbsp;&#x1F503;</span></p></li>
 				</ul>
 				<hr>
 				<p style="text-align:center;"><em><a href="https://github.com/cwindolf/cw.net-2.0">Source</a></em></p>
@@ -40,6 +40,7 @@
 	var title = document.getElementById("title");
 	var iframe = document.getElementById("iframe");
 	var x_button_holder = document.getElementById("x");
+	var main = document.getElementsByTagName("main")[0];
 
 	function setTitle(newTitle) {
 		title.innerHTML = newTitle;
@@ -48,11 +49,13 @@
 
 	function load(url) {
 		iframe.src = url;
+		main.classList.add("open")
 		x.innerHTML = "&times;";
 	}
 
 	function close() {
 		iframe.src = "apps/screensaver.html";
+		main.classList.remove("open")
 		x.innerHTML = "";
 		setTitle("Emptiness...");
 	}
