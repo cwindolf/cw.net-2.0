@@ -3,6 +3,8 @@
 // Doubly Linked List structure w embodied differential properties
 var node_count = 0;
 var centers = {};
+var d = { x: 0, y: 0 };
+var dist = lin = 0;
 function Node (x, y, brother, sister) {
 	this.brother = brother; // brother comes before in dll
 	this.sister = sister; // sister comes after
@@ -19,8 +21,6 @@ function Node (x, y, brother, sister) {
 
 Node.prototype = {
 	// species behaviors
-	SUPER_SPLIT_ANGLE: 0.8,
-	SPLIT_ANGLE: 0.4,
 	BIND_RADIUS: 1,
 	REPEL_RADIUS: 70,
 	STRONG_FORCE: 0.125,
@@ -55,9 +55,9 @@ Node.prototype = {
 	sine: function() {
 		// law of sines:
 		//		(bro)			area: T
-		//	  c /	`  a
-		//	   / A	 `
-		//  (me)--b---(sis)		=> sin(A) = 2T/bc
+		//	  c /	\  a
+		//	   / A	 \
+		//  (me)--b-(sis)		==> sin(A) = 2T/bc
 		if (!(!!this.brother && !!this.sister)) return 0;
 		var me = this.center(),
 		   sis = this.sister.center(),
@@ -77,8 +77,6 @@ Node.prototype = {
 		this.delta.x += this.DUMB_FORCE * (view.center.x - mc.x);
 		this.delta.y += this.DUMB_FORCE * (view.center.y - mc.y);
 		if (this.sister) {
-			var dist, lin;
-			var d = { x: 0, y: 0 };
 			// I want to be as close as possible to my siblings.
 			// well, not too close ...
 			dist = this.sister.center().getDistance(mc);
@@ -125,11 +123,14 @@ Node.prototype = {
 
 
 /* main ******************************************************************** */
+// constants
 tool.minDistance = 6;
 tool.maxDistance = 9;
-var frame = 1/60;
-// data
+var STEP = 1/60;
+
+// store nodes
 var curr = dll = undefined;
+
 // init mesh
 onMouseDown = function(evt) {
 	paper.view.onFrame = null;
@@ -161,7 +162,7 @@ begin = function() {
 			window.guy.divide();
 		}
 		window.guy = !!sis ? sis : dll;
-		actChain(frame);
+		actChain(STEP);
 	}
 }
 function calcCenters() {
