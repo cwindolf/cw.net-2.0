@@ -1,4 +1,13 @@
 /* positioning & typography */
+html {
+    font-size: 100%; /* 1 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -ms-text-size-adjust: 100%; /* 2 */
+}
+
+html {
+	font-size: 1em;
+}
 
 body {
 	position: absolute;
@@ -6,6 +15,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 	font-family: "Courier New", monospace;
 	background-image: url("../assets/bg.gif");
 }
@@ -48,10 +58,9 @@ main {
 }
 
 iframe {
-	position: absolute;
-	margin: -0.25em;
-	width: calc(100%);
-	height: calc(100% - 1.5em - 1px);
+	width: 100%;
+	height: 100%;
+	display: block !important;
 }
 
 /* window */
@@ -60,8 +69,8 @@ menu, section {
 	top: 1em;
 	left: 1em;
 	border: 1px solid black;
-	height: calc(100% - 2em);
-	width: calc(100% - 2em);
+	height: calc(100% - 2em - 2px);
+	width: calc(100% - 2em - 2px);
 	background-color: white;
 }
 
@@ -72,11 +81,12 @@ menu, section {
 }
 
 .content {
-	padding: 0.25em;
+	position: relative;
+	width: calc(100%);
+	height: calc(100% - 1.5em - 1px);
 }
 
 section .content {
-	overflow: hidden;
 }
 
 #x {
@@ -120,21 +130,20 @@ span.emoji {
 }
 
 /* responsive */
-@media only screen and (max-width: 976px) {
+@media (max-width: 976px) {
+
 	aside {
-		width: 100%;
+		width: calc(100% - 2em);
 		display: block;
 		position: absolute;
 		top: 0;
 		left: 0;
-		right: 0;
-		bottom: 0;
 		padding: 1em;
 	}
 
 	menu, section {
 		position: relative;
-		width: calc(100% - 2em);
+		width: 100%;
 		height: 100%;
 		top: 0; left: 0;
 	}
@@ -145,10 +154,11 @@ span.emoji {
 
 	main.open {
 		display: block;
-		width: 100%;
+		width: calc(100% - 2em);
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 2;
 	}
+
 }
