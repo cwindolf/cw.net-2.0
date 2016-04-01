@@ -81,7 +81,7 @@ Guy.prototype = {
 var guys = [];
 var width = view.size.width; var height = view.size.height;
 
-for (var i = 0; i < Math.min(6, width * height / 100000); i++) {
+for (var i = 0; i < Math.max(6, width * height / 100000); i++) {
 	guys.push(new Guy(Math.random() * width, Math.random() * height));
 }
 
