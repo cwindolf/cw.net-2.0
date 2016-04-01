@@ -16,6 +16,7 @@
 				<ul>
 					<li id="accretion"><p>Accretion<span class="emoji">&nbsp;&#x2693;</span></p></li>
 					<li id="coral"><p>Coral<span class="emoji">&nbsp;&#x1F300;</span></p></li>
+					<li id="dance"><p>Dance<span class="emoji">&nbsp;&#x1F483;</span></p></li>
 					<li id="petri"><p>Petri Dish <em>WIP</em><span class="emoji">&nbsp;&#x1f52c;</span></p></li>
 					<li id="pond"><p>Pond<span class="emoji">&nbsp;&#x1F30A;</span></p></li>
 					<li id="bathtub"><p>Bathtub<span class="emoji">&nbsp;&#x1f6c1;</span></p></li>
@@ -71,6 +72,11 @@
 	pond.onclick = function() {
 		load("apps/pond.html");
 		setTitle("A Simulated Pond <span style='font-weight:normal;font-style:italic;'>Please, click!</span>");
+	};
+	var dance = document.getElementById("dance");
+	dance.onclick = function() {
+		load("apps/dance.html");
+		setTitle("Dance");
 	};
 	var bathtub = document.getElementById("bathtub");
 	bathtub.onclick = function() {
