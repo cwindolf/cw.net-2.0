@@ -3,8 +3,8 @@ function Guy (x, y) {
 	console.log("new Guy at (",x,",",y,")");
 	this.x = x;
 	this.y = y;
-	this.dx = Math.random();
-	this.dy = Math.random();
+	this.dx = 200 * Math.random();
+	this.dy = 200 * Math.random();
 
 	this.pastLives = [];
 	var c = new Shape.Circle({
@@ -21,8 +21,8 @@ Guy.prototype = {
 	MEMORY: 100,
 	FORGETFULNESS: 0.95,
 	RADIUS: 20,
-	FOV_SQUARED: Math.pow(0.25 * Math.min(view.size.width, view.size.height), 2),
-	FRICTION: 0.995,
+	FOV_SQUARED: Math.pow(0.3 * Math.min(view.size.width, view.size.height), 2),
+	FRICTION: 0.997,
 	STRENGTH: 0.1,
 
 	// helpers
@@ -81,7 +81,7 @@ Guy.prototype = {
 var guys = [];
 var width = view.size.width; var height = view.size.height;
 
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 12; i++) {
 	guys.push(new Guy(Math.random() * width, Math.random() * height));
 }
 
